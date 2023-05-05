@@ -5,42 +5,41 @@ import numpy as np
 from typing import Optional
 
 
-SHAPES = [(12, 4), (4, 1)]
-
-ACTIVATION_FUNCTIONS = [sqrt, sigmoid, sigmoid]
-
-
 class Brain:
     def __init__(self):
         """
         Genotype should be 12 values vector approx. between -1 and 1.
         """
 
+        # Neural network hyperparameter:
+        self.layer_shapes = [(12, 4), (4, 1)]
+        self.functions = [sqrt, sigmoid, sigmoid]
+
         # PSO parameters:
-        self.x: np.ndarray = get_initial_random_weights(SHAPES)
-        self.v: np.ndarray = get_initial_random_weights(SHAPES)
+        # Note: x is also used as a list of weights for consecutive neural network layers.
+        self.x: np.ndarray = get_initial_random_weights(self.layer_shapes)
+        self.v: np.ndarray = get_initial_random_weights(self.layer_shapes)
         self.best_x: np.ndarray = self.x
         self.best_fitness_function_value: float = 0.0
-
-        # Neural network hyperparameter:
-        self.functions = ACTIVATION_FUNCTIONS
 
     def predict_move(self, map) -> Direction:
         """
         Calculates distances from walls, apple and snake itself.
         Runs neural network on calculated distances and predicts snake's direction.
         """
-        dist = map.get_distances()
+        dist: list[int] = map.get_distances()
         dist_matrix: np.ndarray = dist_to_matrix(dist)
 
-        res = dist_matrix
+        # Run neural network:
+        result: np.ndarray = dist_matrix
 
         for m, f in zip(self.x, self.functions):
-            res = res @ f(m)
+            result = result @ f(m)
 
-        res = res.T[0]
+        direction_probabilities = result.T[0]
         directions = [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT]
-        return directions[np.argmax(res)]
+        # Return direction that is the most likely one:
+        return directions[np.argmax(direction_probabilities)]
 
 
 def pso(
