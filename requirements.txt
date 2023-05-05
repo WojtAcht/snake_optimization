@@ -1,0 +1,6 @@
+numpy
+random
+pygame
+time
+itertools
+sys
