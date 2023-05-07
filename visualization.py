@@ -5,6 +5,7 @@ from utils import *
 import pygame
 import time
 import itertools
+import matplotlib.pyplot as plt
 
 import sys
 
@@ -23,13 +24,13 @@ class HumanInput(Brain):
                 sys.exit(1)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT or event.key == ord("a"):
-                    dir = Direction.LEFT.value
+                    dir = Direction.LEFT
                 if event.key == pygame.K_DOWN or event.key == ord("s"):
-                    dir = Direction.UP.value
+                    dir = Direction.UP
                 if event.key == pygame.K_RIGHT or event.key == ord("d"):
-                    dir = Direction.RIGHT.value
+                    dir = Direction.RIGHT
                 if event.key == pygame.K_UP or event.key == ord("w"):
-                    dir = Direction.DOWN.value
+                    dir = Direction.DOWN
 
         return dir
 
@@ -84,6 +85,26 @@ class Visualization:
                     print(points)
                     break
             time.sleep(1 / 5)
+
+
+
+class Plots:
+    def __init__(self, history: list[np.ndarray]):
+        self.history = history
+
+    def plot_best_per_epoch(self):
+        plt.plot(np.max(self.history, axis=1))
+        plt.title("Best Fitness Value per Epoch")
+        plt.xlabel("Epoch")
+        plt.ylabel("Fitness Value (snake's length)")
+        plt.show()
+
+    def plot_pop_quality_per_epoch(self):
+        plt.boxplot(self.history)
+        plt.title("Population Fitness Value per Epoch")
+        plt.xlabel("Epoch")
+        plt.ylabel("Fitness Value (snake's length)")
+        plt.show()
 
 
 if __name__ == "__main__":

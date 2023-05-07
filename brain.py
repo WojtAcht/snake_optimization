@@ -41,36 +41,42 @@ class Brain:
         # Return direction that is the most likely one:
         return directions[np.argmax(direction_probabilities)]
 
+class PSO:
+    def __init__(self, w: float, c1: float, c2: float, lr: float) -> None:
+        self.w = w
+        self.c1 = c1
+        self.c2 = c2
+        self.lr = lr
 
-def pso(
-    current_brain: Brain,
-    current_brain_fitness_function_value: float,
-    best_brain: Brain,
-    w: float = 0.729,
-    c1: float = 2.05,
-    c2: float = 2.05,
-    lr: float = 0.5,
-) -> Brain:
-    """
-    PSO implementation for snake's Brain objects.
-    It should return updated current_brain object (hint: we need to update x and v).
-    Arguments:
-    - w, c1, c2, lr are PSO hyperparameters.
-    """
-    if current_brain is best_brain:
+    def apply(self,
+        current_brain: Brain,
+        current_brain_fitness_function_value: float,
+        best_brain: Brain
+    ) -> Brain:
+        """
+        PSO implementation for snake's Brain objects.
+        It should return updated current_brain object (hint: we need to update x and v).
+        Arguments:
+        - w, c1, c2, lr are PSO hyperparameters.
+        w: Particle inertia weight factor (Choose between 0.4 and 0.9)
+        c1: Scaling factor to search away from the particle's best known position
+        c2: Scaling factor to search away from the swarm's best known position
+        lr: Velocity multiplier (learning rate)
+        """
+        if current_brain is best_brain:
+            return current_brain
+
+        if current_brain.best_fitness_function_value < current_brain_fitness_function_value:
+            current_brain.best_fitness_function_value = current_brain_fitness_function_value
+            current_brain.best_x = current_brain.x
+
+        r1 = random.random()
+        r2 = random.random()
+        current_brain.v = (
+            current_brain.v * self.w
+            + (current_brain.best_x - current_brain.x) * r1 * self.c1
+            + (best_brain.x - current_brain.x) * r2 * self.c2
+        )
+        current_brain.x = current_brain.x + self.lr * current_brain.v
+
         return current_brain
-
-    if current_brain.best_fitness_function_value < current_brain_fitness_function_value:
-        current_brain.best_fitness_function_value = current_brain_fitness_function_value
-        current_brain.best_x = current_brain.x
-
-    r1 = random.random()
-    r2 = random.random()
-    current_brain.v = (
-        current_brain.v * w
-        + (current_brain.best_x - current_brain.x) * r1 * c1
-        + (best_brain.x - current_brain.x) * r2 * c2
-    )
-    current_brain.x = current_brain.x + lr * current_brain.v
-
-    return current_brain

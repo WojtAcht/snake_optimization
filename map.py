@@ -1,4 +1,3 @@
-from brain import *
 from utils import *
 import random
 from itertools import count
