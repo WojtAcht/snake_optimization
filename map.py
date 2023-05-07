@@ -13,7 +13,7 @@ class Map:
             + [(w - 1, i) for i in range(h)]
             + [(i, h - 1) for i in range(w)]
         )
-        self.last_move = Direction.RIGHT.value
+        self.last_move = Direction.RIGHT
         self.snake = self.new_snake()
         self.apple = self.new_apple()
         self.live = 0

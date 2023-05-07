@@ -42,7 +42,9 @@ def sigmoid(x):
 
 
 def get_initial_random_weights(shapes) -> np.ndarray:
+    # TODO: to comment out:
     return np.array([np.random.rand(*shape) * 2 - 1 for shape in shapes], dtype=object)
+    ################
 
 
 def dist_to_matrix(dist):
