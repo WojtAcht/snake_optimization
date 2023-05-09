@@ -5,11 +5,16 @@ import numpy as np
 from typing import Optional
 
 
+def get_initial_random_weights(shapes: list[tuple[int, int]]) -> np.ndarray:
+    """
+    Initial weights should be random, having uniform distribution over the [-1, 1].
+    """
+    # TODO:
+    raise NotImplementedError()
+
+
 class Brain:
     def __init__(self):
-        """
-        Genotype should be 12 values vector approx. between -1 and 1.
-        """
 
         # Neural network hyperparameter:
         self.layer_shapes = [(12, 4), (4, 1)]

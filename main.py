@@ -13,7 +13,7 @@ if __name__ == "__main__":
     best_brain: Optional[Brain] = None
     history: list[np.ndarray] = []
 
-    # TODO: to comment out:
+    # TODO: implement PSO
     pso = PSO(w=0.5, c1=0.5, c2=1.0)
 
     print(f"no | best | generation")
