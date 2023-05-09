@@ -3,6 +3,7 @@ from brain import Brain, PSO
 from visualization import *
 import numpy as np
 from typing import Optional
+import pygame
 
 POPULATION_SIZE = 100
 EPOCHS_COUNT = 30
@@ -32,6 +33,7 @@ if __name__ == "__main__":
     map = Map()
     V = Visualization(map, best_brain, save_frames=False)
     V.run()
+    pygame.quit()
 
     # Plot results:
     P = Plots(history)

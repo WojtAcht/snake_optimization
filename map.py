@@ -4,6 +4,8 @@ from itertools import count
 
 
 class Map:
+    _MAX_MOVES_SINCE_EATING_APPLE = 100
+
     def __init__(self, w=20, h=20):
         self.w = w
         self.h = h
@@ -18,27 +20,33 @@ class Map:
         self.apple = self.new_apple()
         self.live = 0
 
-    def move(self, direction):
-        """return actual poins and game_over flag"""
+    def get_fitness(self) -> float:
+        eaten_apples = len(self.snake) - 3
+        moves_since_eating_apple = min(self._MAX_MOVES_SINCE_EATING_APPLE, self.live)
+        return eaten_apples + moves_since_eating_apple / self._MAX_MOVES_SINCE_EATING_APPLE
+
+    def game_ended(self, next_cell: tuple[int, int]) -> bool:
+        maximum_live = max(self._MAX_MOVES_SINCE_EATING_APPLE, 5 * len(self.snake))
+        return self.live == maximum_live or next_cell in self.walls or next_cell in self.snake
+
+    def move(self, direction: Direction) -> tuple[float, bool]:
+        """return actual fitness and game_over flag"""
         next_cell = (self.snake[0][0] + direction[0], self.snake[0][1] + direction[1])
 
-        if self.live == max(100, 5 * len(self.snake)):
-            return len(self.snake) - 3 + min(100, self.live) / 100, True
+        if self.game_ended(next_cell):
+            return self.get_fitness(), True
 
         if self.apple in self.snake:
             self.live = 0
+            # Update apple:
             while self.apple in self.snake:
                 self.apple = self.new_apple()
         else:
             self.snake.pop()
 
         self.snake = [next_cell] + self.snake
-
-        if self.snake[0] in self.walls or self.snake[0] in self.snake[1:]:
-            return len(self.snake) - 3 + min(100, self.live) / 100, True
-
         self.live += 1
-        return len(self.snake) - 3 + min(100, self.live) / 100, False
+        return self.get_fitness(), False
 
     def restart(self):
         self.snake = self.new_snake()
@@ -62,6 +70,7 @@ class Map:
 
         wall_distances = []
         for dir in ALL_DIRECTIONS:
+            dir = dir.value
             for i in count(0):
                 v = mul_vector(dir, i)
                 if add_vectors(self.snake[0], v) in self.walls:
@@ -70,6 +79,7 @@ class Map:
 
         snake_distances = []
         for dir in ALL_DIRECTIONS:
+            dir = dir.value
             for i in count(0):
                 v = mul_vector(dir, i)
                 if add_vectors(self.snake[0], v) in self.walls or add_vectors(self.snake[0], v) in self.snake[1:]:

@@ -14,14 +14,14 @@ class Direction(enum.Enum):
 
 
 ALL_DIRECTIONS = [
-    Direction.UP.value,
-    Direction.RU.value,
-    Direction.RIGHT.value,
-    Direction.RD.value,
-    Direction.DOWN.value,
-    Direction.LD.value,
-    Direction.LEFT.value,
-    Direction.LU.value,
+    Direction.UP,
+    Direction.RU,
+    Direction.RIGHT,
+    Direction.RD,
+    Direction.DOWN,
+    Direction.LD,
+    Direction.LEFT,
+    Direction.LU,
 ]
 
 

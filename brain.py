@@ -45,38 +45,30 @@ class PSO:
     """
     PSO implementation for snake's Brain objects.
     It should return updated current_brain object (hint: we need to update x and v).
-    Arguments:
-    - w, c1, c2, lr are PSO hyperparameters.
+    Attributes:
     w: Particle inertia weight factor (Choose between 0.4 and 0.9)
     c1: Scaling factor to search away from the particle's best known position
     c2: Scaling factor to search away from the swarm's best known position
     """
+
     def __init__(self, w: float, c1: float, c2: float) -> None:
         self.w = w
         self.c1 = c1
         self.c2 = c2
 
-    def apply(self,
-        current_brain: Brain,
-        current_brain_fitness_function_value: float,
-        best_brain: Brain
-    ) -> Brain:
+    def apply(self, current_brain: Brain, current_brain_fitness_function_value: float, best_brain: Brain) -> Brain:
         if current_brain is best_brain:
             return current_brain
 
         if current_brain.best_fitness_function_value < current_brain_fitness_function_value:
-            current_brain.best_fitness_function_value = current_brain_fitness_function_value
-            current_brain.best_x = current_brain.x
+            # TODO: update current_brain
+            ...
 
-        # TODO: to comment out:
-        r1 = random.random()
-        r2 = random.random()
-        current_brain.v = (
-            current_brain.v * self.w
-            + (current_brain.best_x - current_brain.x) * r1 * self.c1
-            + (best_brain.x - current_brain.x) * r2 * self.c2
-        )
-        current_brain.x = current_brain.x + current_brain.v
+        # TODO: implement PSO:
+        # r1 = 
+        # r2 = 
+        # current_brain.v =
+        # current_brain.x =
         ######################
 
         return current_brain
