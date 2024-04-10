@@ -1,5 +1,14 @@
 ## Snake optimization
 
+Install dependencies:
+```bash
+git clone https://github.com/WojtAcht/snake_optimization.git
+cd snake_optimization
+python -m venv myvenv
+myvenv\Scripts\activate.bat
+pip install -r requirements.txt
+```
+
 Tasks:
 
 1. Run `main.py`, investigate the code in `main.py` and `brain.py`.
